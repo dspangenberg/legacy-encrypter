@@ -36,7 +36,7 @@ class McryptEncrypter extends BaseEncrypter implements EncrypterContract
      *
      * @throws \RuntimeException
      */
-    public function __construct($key, $cipher = MCRYPT_RIJNDAEL_128)
+    public function __construct($key, $cipher = MCRYPT_RIJNDAEL_256)
     {
         $key = (string) $key;
 
@@ -66,7 +66,6 @@ class McryptEncrypter extends BaseEncrypter implements EncrypterContract
      * Encrypt the given value.
      *
      * @param  string  $value
-     * @param bool $serialize
      * @return string
      *
      * @throws \Illuminate\Contracts\Encryption\EncryptException
@@ -109,12 +108,11 @@ class McryptEncrypter extends BaseEncrypter implements EncrypterContract
      * Decrypt the given value.
      *
      * @param  string  $payload
-     * @param bool $unserialize
      * @return string
      */
-    public function decrypt($payload)
+    public function decrypt($payload, $unserialize = true)
     {
-        $payload = $this->getJsonPayload($payload, $unserialize = true);
+        $payload = $this->getJsonPayload($payload);
 
         // We'll go ahead and remove the PKCS7 padding from the encrypted value before
         // we decrypt it. Once we have the de-padded value, we will grab the vector
