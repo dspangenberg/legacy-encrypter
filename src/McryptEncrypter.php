@@ -66,11 +66,12 @@ class McryptEncrypter extends BaseEncrypter implements EncrypterContract
      * Encrypt the given value.
      *
      * @param  string  $value
+     * @param bool $serialize
      * @return string
      *
      * @throws \Illuminate\Contracts\Encryption\EncryptException
      */
-    public function encrypt($value)
+    public function encrypt($value, $serialize = true)
     {
         $iv = mcrypt_create_iv($this->getIvSize(), $this->getRandomizer());
 
@@ -108,11 +109,12 @@ class McryptEncrypter extends BaseEncrypter implements EncrypterContract
      * Decrypt the given value.
      *
      * @param  string  $payload
+     * @param bool $unserialize
      * @return string
      */
     public function decrypt($payload)
     {
-        $payload = $this->getJsonPayload($payload);
+        $payload = $this->getJsonPayload($payload, $unserialize = true);
 
         // We'll go ahead and remove the PKCS7 padding from the encrypted value before
         // we decrypt it. Once we have the de-padded value, we will grab the vector
